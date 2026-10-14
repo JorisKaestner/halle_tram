@@ -1,6 +1,7 @@
 import requests
 import os
 import time
+import pandas as pd
 from zipfile import ZipFile
 from pathlib import Path
 
@@ -45,13 +46,51 @@ class StaticFeed:
         # Reset dataframes to force reload
         self._stops = self._trips = self._routes = None
 
+    ## data frames ##
 
-    # get platform id from station name
-    def resolve_platform_id():
-        pass
+    @property
+    def stops(self) -> pd.DataFrame:
+        if self._stops is None:
+            self._stops = pd.read_csv(self.extract_dir / "stops.txt", dtype=str)
+        return self._stops
+
+    @property
+    def trips(self) -> pd.DataFrame:
+        if self._trips is None:
+            self._trips = pd.read_csv(self.extract_dir / "trips.txt", dtype=str).set_index("trip_id")
+        return self._trips
+
+    @property
+    def routes(self) -> pd.DataFrame:
+        if self._routes is None:
+            self._routes = pd.read_csv(self.extract_dir / "routes.txt", dtype=str).set_index("route_id")
+        return self._routes
+
+    def resolve_platform_ids(self, station_name:str) -> set[str]:
+        """Get a set of platform IDs from a station name"""
+        stops = self.stops
+        station = stops[(stops["stop_name"] == station_name) & (stops["location_type"] == "1")]
+
+        if station.empty:
+            # check if stop is a direct stop without child platform
+            direct_stops = stops[(stops["stop_name"] == station_name)]
+            if direct_stops.empty:
+                raise ValueError(f"No stop with name '{station_name}'")
+            return set(direct_stops["stop_id"])
+
+        station_id = station.iloc[0]["stop_id"]
+        platforms = stops[(stops["parent_station"] == station_id) & (stops["location_type"] == "0")]
+        return set(platforms["stop_id"])
+
+    def search_station_names(self, keyword:str) -> set[str]:
+        """Get a set of station names which contain the keyword (case-insensitive)"""
+        stations = self.stops[self.stops["stop_name"].str.contains(keyword, case=False)]
+        return set(stations["stop_name"].tolist())
 
     def trip_info():
         pass
 
 feed = StaticFeed()
-feed.refresh_feed(force=True)
+feed.refresh_feed(force=False)
+#print(feed.stops["stop_name"])
+print(feed.search_station_names("rannischer"))
