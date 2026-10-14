@@ -87,10 +87,14 @@ class StaticFeed:
         stations = self.stops[self.stops["stop_name"].str.contains(keyword, case=False)]
         return set(stations["stop_name"].tolist())
 
-    def trip_info():
-        pass
+    def trip_info(self, trip_id: str) -> tuple[str | None, str | None]:
+        if trip_id not in self.trips.index:
+            return None, None
+        trip_row = self.trips.loc[trip_id]
+        route_id = trip_row.get("route_id")
+        line = self.routes.loc[route_id].get("route_short_name") if route_id in self.routes.index else None
+        return route_id, line
 
 feed = StaticFeed()
 feed.refresh_feed(force=False)
-#print(feed.stops["stop_name"])
-print(feed.search_station_names("rannischer"))
+print(feed.resolve_platform_ids("Rannischer Platz"))
