@@ -4,9 +4,7 @@ import time
 import pandas as pd
 from zipfile import ZipFile
 from pathlib import Path
-
-DEFAULT_CACHE_DIR = Path.home() / ".cache" / "halle_tram"
-STATIC_FEED_URL = "https://download.gtfs.de/germany/nv_free/latest.zip"
+from config import DEFAULT_CACHE_DIR, STATIC_FEED_URL
 
 class StaticFeed:
     def __init__(self, cache_dir = DEFAULT_CACHE_DIR):
@@ -94,7 +92,3 @@ class StaticFeed:
         route_id = trip_row.get("route_id")
         line = self.routes.loc[route_id].get("route_short_name") if route_id in self.routes.index else None
         return route_id, line
-
-feed = StaticFeed()
-feed.refresh_feed(force=False)
-print(feed.resolve_platform_ids("Rannischer Platz"))

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import requests
 from google.transit import gtfs_realtime_pb2
-REALTIME_FEED_URL = "https://realtime.gtfs.de/realtime-free.pb"
+from config import REALTIME_FEED_URL
 
 @dataclass
 class RawStopTimeUpdate:
@@ -18,7 +18,7 @@ def fetch_feed() -> gtfs_realtime_pb2.FeedMessage:
     feed.ParseFromString(response.content)
     return feed
 
-def stop_time_updates_for(
+def get_stop_time_updates(
     feed: gtfs_realtime_pb2.FeedMessage, stop_ids: set[str]
 ) -> list[RawStopTimeUpdate]:
     """Extract every stop_time_update in the feed matching one of stop_ids."""
