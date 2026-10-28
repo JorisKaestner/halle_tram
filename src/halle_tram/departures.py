@@ -50,9 +50,9 @@ class DepartureBoard:
             self.static.extract_dir, self.static.zip_path, self.platform_ids, self.cache_dir
         )
 
-    def refresh(self) -> None:
+    def refresh(self, force: bool = False) -> None:
         """Re-download the static feed if stale and rebuild the timetable"""
-        self.static.refresh_feed()
+        self.static.refresh_feed(force)
         self._load()
 
     def get_departures(self, limit: int = 10, ahead_minutes: int = 90,
