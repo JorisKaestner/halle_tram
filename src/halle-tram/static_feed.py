@@ -66,6 +66,7 @@ class StaticFeed:
 
     def resolve_platform_ids(self, station_name:str) -> set[str]:
         """Get a set of platform IDs from a station name"""
+
         stops = self.stops
         station = stops[(stops["stop_name"] == station_name) & (stops["location_type"] == "1")]
 
