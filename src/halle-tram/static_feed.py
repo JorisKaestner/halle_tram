@@ -4,7 +4,7 @@ import time
 import pandas as pd
 from zipfile import ZipFile
 from pathlib import Path
-from config import DEFAULT_CACHE_DIR, STATIC_FEED_URL
+from .config import DEFAULT_CACHE_DIR, STATIC_FEED_URL
 
 class StaticFeed:
     def __init__(self, cache_dir = DEFAULT_CACHE_DIR):

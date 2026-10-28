@@ -8,11 +8,11 @@ from zoneinfo import ZoneInfo
 
 import requests
 
-from config import DEFAULT_CACHE_DIR, TIMEZONE
-from realtime_feed import fetch_feed
-from realtime_overlay import index_trip_updates, overlay
-from schedule import load_schedule
-from static_feed import StaticFeed
+from .config import DEFAULT_CACHE_DIR, TIMEZONE
+from .realtime_feed import fetch_feed
+from .realtime_overlay import index_trip_updates, overlay
+from .schedule import load_schedule
+from .static_feed import StaticFeed
 
 LOOK_BACK_MIN = 30     # scheduled slots this far back are checked (delayed trams)
 GRACE_S = 30           # keep a departure for this long after its predicted time
@@ -91,7 +91,3 @@ class DepartureBoard:
 
         result.sort(key=lambda d: d.time)
         return result[:limit]
-
-board = DepartureBoard("Rannischer Platz")
-for b in board.get_departures(limit=8):
-    print(b)

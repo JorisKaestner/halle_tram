@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import requests
 from google.transit import gtfs_realtime_pb2
-from config import REALTIME_FEED_URL
+from .config import REALTIME_FEED_URL
 
 @dataclass
 class RawStopTimeUpdate:
