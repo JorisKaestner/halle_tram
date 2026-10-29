@@ -78,7 +78,7 @@ class StaticFeed:
             return set(direct_stops["stop_id"])
 
         station_id = station.iloc[0]["stop_id"]
-        platforms = stops[(stops["parent_station"] == station_id) & (stops["location_type"] == "0")]
+        platforms = stops[(stops["parent_station"] == station_id)]
         return set(platforms["stop_id"])
 
     def search_station_names(self, keyword:str) -> set[str]:
