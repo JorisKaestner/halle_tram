@@ -26,7 +26,7 @@ Small usage example:
 ```python
 from halle_tram import DepartureBoard
 
-board = DepartureBoard("[station name]")
+board = DepartureBoard("Halle (Saale), Rannischer Platz")
 for departure in board.get_departures(limit=8):
     print(departure)
 ```
@@ -64,13 +64,13 @@ class Departure:
 ```
 
 **Usage example**
-Create a self refreshing display for the station "Rannischer Platz". Fetch the first 8 departures within the next hour:
+Create a self refreshing display for the station "Halle (Saale), Rannischer Platz". Fetch the first 8 departures within the next hour:
 
 ```python
 import time
 from halle_tram import DepartureBoard
 
-board = DepartureBoard("Rannischer Platz")
+board = DepartureBoard("Halle (Saale), Rannischer Platz")
 while True:
     board.refresh()
     for dep in board.get_departures(limit=8, ahead_minutes=60):
